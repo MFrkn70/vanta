@@ -1,5 +1,7 @@
 use std::fmt;
 
+use crate::platform::platform_console_write_err;
+
 pub const LOG_ENABLE_WARNING    : bool = true;
 pub const LOG_ENABLE_INFO       : bool = true;
 
@@ -13,7 +15,7 @@ pub const LOG_ENABLE_DEBUG      : bool = false;
 #[cfg(not(debug_assertions))]
 pub const LOG_ENABLE_TRACE      : bool = false;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum LogLevel {
     Fatal,
     Error,
@@ -37,8 +39,15 @@ pub fn shutdown_logging(){
 
 pub fn log_output (level : LogLevel, message : &str){
 
-    println!("{} {}", level, message);
+    let is_error = level <= LogLevel::Error;
+    if is_error {
+        use crate::platform::platform_console_write_err;
+        platform_console_write_err(message, level as u8);
+    } else {
+        use crate::platform::platform_console_write;
+        platform_console_write(message, level as u8);
 
+    }
 }
 
 #[macro_export]

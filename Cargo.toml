@@ -3,9 +3,10 @@ name = "vanta"
 version = "0.1.0"
 edition = "2024"
 
-[dependencies]
-winit = "0.30.13"
 
 [[bin]]
 name = "vanta"
 path = "engine/src/main.rs"
+
+[target."cfg(windows)".dependencies]
+windows = { version = "0.62.2", features = ["Win32_Foundation", "Win32_System_LibraryLoader", "Win32_UI_WindowsAndMessaging"] }
