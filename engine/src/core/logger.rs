@@ -1,4 +1,4 @@
-use std::fmt;
+use std::{fmt, process::Output};
 
 use crate::platform::platform_console_write_err;
 
@@ -38,14 +38,14 @@ pub fn shutdown_logging(){
 }
 
 pub fn log_output (level : LogLevel, message : &str){
-
+    let output = format!("{}{}\n\0", level, message);
     let is_error = level <= LogLevel::Error;
     if is_error {
         use crate::platform::platform_console_write_err;
-        platform_console_write_err(message, level as u8);
+        platform_console_write_err(&output, level as u8);
     } else {
         use crate::platform::platform_console_write;
-        platform_console_write(message, level as u8);
+        platform_console_write(&output, level as u8);
 
     }
 }
