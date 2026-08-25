@@ -189,7 +189,7 @@ pub fn platform_startup(
 
     platform_state.internal_state =
         state_ptr as *mut c_void;
-
+    log_info!("Platform started: X11");
     true
 }
 

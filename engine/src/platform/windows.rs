@@ -146,6 +146,7 @@ pub fn platform_startup(platform_state: &mut PlatformState, platform_name: &str,
         QueryPerformanceCounter(&mut START_TIME);
     }
 
+    log_info!("Platform started: Windows");
     true
 }
 

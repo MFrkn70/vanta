@@ -224,10 +224,7 @@ pub fn platform_startup(
     let _ = (platform_name, x, y);
 
     let connection = match Connection::connect_to_env() {
-        Ok(connection) => {
-            log_trace!("Connected to Wayland");
-            connection
-        },
+        Ok(connection) => connection,
 
         Err(_) => {
             log_fatal!("Failed to connect to Wayland compositor!");
@@ -239,10 +236,7 @@ pub fn platform_startup(
 
     let (globals, mut event_queue) =
         match registry_queue_init::<WaylandState>(&connection) {
-            Ok(result) => {
-                log_trace!("Wayland Registry initialized");
-                result
-            },
+            Ok(result) => result,
 
             Err(_) => {
                 log_fatal!("Failed to initialize Wayland registry!");
@@ -254,10 +248,7 @@ pub fn platform_startup(
 
     let compositor: WlCompositor =
         match globals.bind::<WlCompositor, _, _>(&qh, 4..=6, ()) {
-            Ok(compositor) => {
-                log_trace!("Wayland compositor created");
-                compositor
-            },
+            Ok(compositor) => compositor,
 
             Err(_) => {
                 log_fatal!("Wayland compositor is not available!");
@@ -270,10 +261,7 @@ pub fn platform_startup(
 
     let shm: WlShm =
         match globals.bind::<WlShm, _, _>(&qh, 1..=1, ()) {
-            Ok(shm) => {
-                log_trace!("Wayland SHM created");
-                shm
-            },
+            Ok(shm) => shm,
 
             Err(_) => {
                 log_fatal!("Wayland SHM is not available!");
@@ -283,10 +271,7 @@ pub fn platform_startup(
 
     let xdg_wm_base: XdgWmBase =
         match globals.bind::<XdgWmBase, _, _>(&qh, 1..=1, ()) {
-            Ok(xdg_wm_base) => {
-                log_trace!("xdg_wm_base created");
-                xdg_wm_base
-            },
+            Ok(xdg_wm_base) => xdg_wm_base,
 
             Err(_) => {
                 log_fatal!("xdg_wm_base is not available!");
@@ -375,6 +360,7 @@ surface.damage_buffer(0, 0, width, height);
 
     PLATFORM_START_TIME.get_or_init(Instant::now);
 
+    log_info!("Platform started: wayland");
 
     true
 }

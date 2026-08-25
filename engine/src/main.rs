@@ -5,7 +5,6 @@ use crate::platform::*;
 
 fn main(){
 
-    log_info!("Platform Start");
 
 
     let mut platform_state = PlatformState {
